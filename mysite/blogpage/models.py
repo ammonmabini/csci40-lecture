@@ -8,6 +8,9 @@ class Profile (models.Model):
     year = models.IntegerField()
     course = models.CharField(max_length=67)
 
+    def __str__(self):
+        return self.user.username
+
 class TaskGroup(models.Model):
     name = models.CharField(max_length=50)
 
@@ -32,6 +35,10 @@ class Task(models.Model):
     due_date = models.DateTimeField(null=False)
     taskgroup = models.ForeignKey(TaskGroup, on_delete=models.CASCADE, 
                                   related_name='tasks')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, 
+                                   related_name='task_list', null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return '{}: due on {} unit(s)'.format(self.name, self.due_date)#Assignment due on 2026-02-13

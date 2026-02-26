@@ -1,9 +1,5 @@
-{% block logout %}
-
 <form method = "POST" action="{% url 'logout' %}">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Logout</button>
 </form>
-
-{% endblock %}

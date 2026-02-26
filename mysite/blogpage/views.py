@@ -57,6 +57,12 @@ class TaskListView(ListView):
     model = Task
     template_name = 'blogpage/task_list.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['task_list'] = Task.objects.filter(profile__user=self.request.user)
+        return context
+
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
     template_name = 'blogpage/task_detail.html'
+
