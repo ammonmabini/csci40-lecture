@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
 
+
 tasks = []
 # Create your views here.
 def index (request):
@@ -20,12 +21,13 @@ def task_list (request):
         form = TaskForm(request.POST) #handles data sent by user
 
         if form.is_valid():
-            tasks.append((form.cleaned_data["task_name"], form.cleaned_data["task_date"]))
-            return redirect ("/blogpage/list")
+            task = Task()
+            task.name = form.cleaned_data.get("task_name")
+            task.date = form.cleaned_data.get("task_date")
+            task.taskgroup = form.cleaned_data.get("taskgroup")
+            task.save() #saves to database
+            return redirect("blogpage:task_detail", pk=task.pk) #redirects to task list page
         
-    elif request.method == "UPDATE":
-        pass
-
     else:
         form = TaskForm() #empty form
 
@@ -33,7 +35,8 @@ def task_list (request):
 
     return render (request, "blogpage/task_list.html" , {
         "form": form,
-        "tasks": tasks,
+        "task_list": tasks,
+        "taskgroups": TaskGroup.objects.all(),
     })
 
 @login_required
@@ -61,6 +64,12 @@ class TaskListView(ListView):
         context = super().get_context_data(**kwargs)
         context['task_list'] = Task.objects.filter(profile__user=self.request.user)
         return context
+    
+    def get(self, request, *args, **kwargs):
+        pass
+    
+    def post(self, request, *args, **kwargs):
+        pass
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
