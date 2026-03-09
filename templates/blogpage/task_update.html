@@ -1,0 +1,12 @@
+{% extends 'blogpage/base_blogpage.html' %}
+
+{% block title %} Update Task {% endblock %}
+{% block header %}<h3>Update Task</h3>{% endblock %}
+
+{% blick content %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Update Task">
+    </form>
+{% endblock %}

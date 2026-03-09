@@ -1,0 +1,17 @@
+{% extends 'blogpage/base_blogpage.html' %}
+
+{% block title %} Task List {% endblock %}
+{% block header %} Task List {% endblock %}
+{% block content %}
+
+    <ul>
+    {% for task in task_list %}
+        <li><a href="{{ task.get_absolute_url }}">{{ task.name }} - {{ task.due_date|date:"Y-m-d" }}</a></li>  
+    {% endfor %}
+    </ul>
+
+{% endblock %}
+
+
+
+    
